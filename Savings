@@ -1,0 +1,36 @@
+//Savings accounts (sub-class of Account class)
+public class Savings extends Account {
+	//private data members 
+	double minBalance; 
+	double maintFee; 
+	
+	//********************************
+	//Constructor
+	public Savings(String n, String o, double b) {
+		super(n, o, b); 
+	}
+	
+	
+	//********************************
+	//If the balance in the savings account goes below the min., 
+	//the maint. fee is charged once per month until the situation is corrected 
+	public void chargeMaintFee() {
+		setBalance(getBalance() - maintFee); 
+	}
+	
+	//*********************************
+	//Getters and Setters
+	public double getMinBalance() {
+		return minBalance;
+	}
+	public void setMinBalance(double minBalance) {
+		this.minBalance = minBalance;
+	}
+	public double getMaintFee() {
+		return maintFee;
+	}
+	public void setMaintFee(double maintFee) {
+		this.maintFee = maintFee;
+	}
+	
+}
