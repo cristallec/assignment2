@@ -17,6 +17,8 @@ public class BatchProcessor {
 	//Stores all of the accounts in a single ArrayList
 	private static ArrayList<Account> accounts = new ArrayList<Account>(); 
 
+	
+	//**************************************
 	//Deposit method: amount to be deposited 
 	public static void processDeposit(Account a, double Amt) {
 		
@@ -67,17 +69,20 @@ public class BatchProcessor {
 			//counts how many accounts to process 
 			int numAccounts = 0; 
 			while(input.hasNextLine()) {
-				System.out.println(input.nextLine()); 
+				input.nextLine(); 
 				numAccounts++; 
-				System.out.println(numAccounts); 
 			}
+			input.close(); 
+			
+			Scanner scan = new Scanner(f); 
+			
 			//Stores all of the accounts in a single ArrayList called accounts
 			for(int i = 0; i < numAccounts; i++) {
-				String line = input.nextLine(); 
+				String line = scan.nextLine(); 
 				String[] a = line.split(" ");   //splits on the blank space 
 				String accountNum = a[0];  //account number
 				char accountType = a[1].charAt(0);   //account type: C for checking, S for savings
-				String ownerName = a[2] + a[3];       //owner name given as first name and last name
+				String ownerName = a[2] + " " + a[3];       //owner name given as first name and last name
 				double acctBalance = Double.parseDouble(a[4]);   //account balance
 				
 				//add to accounts arraylist
@@ -89,14 +94,64 @@ public class BatchProcessor {
 				}
 			}
 			
-			
-			
-			input.close(); //Close the Scanner
+			scan.close(); //Close the Scanner
 			
 		}  //if it fails, then the catch block will handle errors
 		catch(FileNotFoundException e) {
 			System.out.println("Error"); 
 			e.printStackTrace(); //will tell you what went wrong
+		}
+		
+		//process the batch.txt file
+		try {
+			File f = new File("batch.txt"); 
+			Scanner s = new Scanner(f); 
+			String line = s.nextLine(); 
+			
+			//counts how many requests to process
+			int numRequests = 0; 
+			while(s.hasNextLine()) {
+				numRequests++;
+				s.nextLine(); 
+				System.out.println(numRequests); 
+			}
+			
+			
+			Scanner x = new Scanner(f); 
+			for(int i = 0; i < numRequests; i++) {
+				String request = x.next(); 
+				
+				//W to withdraw amount
+				if(request.equals("W")) {
+					
+				}
+				
+				//D to deposit amount
+				if(request.equals("D")) {
+					
+				}
+				
+				//T to transfer amount
+				if(request.equals("T")) {
+					
+				}
+				
+				//C to close account 
+				if(request.equals("C")) {
+					
+				}
+				
+				
+			}
+			
+			
+			s.close(); //close the scanner
+			x.close(); 
+			
+		} //if it fails, then the catch block will handle errors
+		catch(FileNotFoundException error) {
+			System.out.println("Error"); 
+			error.printStackTrace(); //will tell you what went wrong
 		}
 		
 		
