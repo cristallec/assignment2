@@ -1,5 +1,3 @@
 123 C Mary Cross 50000.00 200 154 24
 211 S Andrew Green 2500.00
 145 S Vaughn Hope 75000.00
-302 C Chris Stone 39000.00 820 903 32
-420 C Will Cake 52000.00 911 502 28
