@@ -13,6 +13,48 @@ public abstract class Account {
 		balance = b; 
 	}
 	
+	//*************************
+	//abstract method 
+	public abstract void chargeMaintFee();
+	
+	//***********************************
+	//printAccounts: print out the number, owner, balance
+	public String printAccount() {
+		return "Number: " + this.number + " Owner: " + this.owner + " Balance: " + this.balance; 
+	}
+	
+	//***********************************
+	//Withdraw method
+	public void withdraw(double amt) {
+		balance = balance - amt; 
+		System.out.println("Account " + number + " withdrew " + amt); 
+	}
+	
+	//***********************************
+	//Deposit method
+	public void deposit(double amt) {
+		balance = balance + amt; 
+		System.out.println("Account " + number + " deposited " + amt); 
+	}
+	
+	
+	//***********************************
+	//Transfer method 
+	public void transferTo(double amt) {  
+		balance = balance + amt; 
+		System.out.println(amt + " transferred to Account " + number); 
+	}
+	
+	public void transferFrom(double amt) {
+		balance = balance - amt; 
+	}
+
+	
+	//***********************************
+	//Close method
+	public void close() {
+		System.out.println("Closed account " + number); 
+	}
 
 	//************************************
 	//Getters and Setters
