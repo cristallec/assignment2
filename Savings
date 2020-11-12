@@ -10,13 +10,52 @@ public class Savings extends Account {
 		super(n, o, b); 
 	}
 	
+	//**********************************
+	//Print Savings Account
+	public String printAccount() {
+		return getNumber() + " " + "S " + getOwner() + " " + getBalance(); 
+	}
+	
+	//***********************************
+	//Withdraw method
+	public void withdraw(double amt) {
+		balance = balance - amt; 
+		System.out.println("Savings Account " + number + " withdrew " + amt); 
+	}
+	
+	//***********************************
+	//Deposit method
+	public void deposit(double amt) {
+		setBalance(getBalance() + amt); 
+		System.out.println("Savings Account " + number + " deposited " + amt); 
+	}
+	
+	//***********************************
+	//Transfer method
+	public void transferTo(double amt) {  
+		balance = balance + amt; 
+		System.out.println(amt + " transferred to Savings Account " + number); 
+	}
+	
+	public void transferFrom(double amt) {
+		balance = balance - amt; 
+	}
+
+	
+	//***********************************
+	//Close method
+	public void close() {
+		System.out.println("Closed savings account " + getNumber()); 
+	}
+	
 	
 	//********************************
 	//If the balance in the savings account goes below the min., 
 	//the maint. fee is charged once per month until the situation is corrected 
 	public void chargeMaintFee() {
-		if(getBalance() < minBalance) {
+		if(this.getBalance() < minBalance) {
 			setBalance(getBalance() - maintFee); 
+			System.out.println(this.getNumber() + " was charged 25.00"); 
 		}
 	}
 	
