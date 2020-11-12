@@ -1,13 +1,13 @@
 //Accounts super class- abstract 
 public abstract class Account {
 	//private data members
-	String number; 
+	int number; 
 	String owner; 
 	double balance;
 	
 	//**********************
 	//Constructor 
-	public Account(String n, String o, double b) {
+	public Account(int n, String o, double b) {
 		number = n; 
 		owner = o;
 		balance = b; 
@@ -17,10 +17,10 @@ public abstract class Account {
 	
 	//************************************
 	//Getters and Setters
-	public String getNumber() {
+	public int getNumber() {
 		return number;
 	}
-	public void setNumber(String number) {
+	public void setNumber(int number) {
 		this.number = number;
 	}
 	public String getOwner() {
@@ -37,4 +37,3 @@ public abstract class Account {
 	} 
 	
 }
-
