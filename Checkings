@@ -8,7 +8,7 @@ public class Checkings extends Account{
 	
 	//****************************
 	//Constructor
-	public Checkings(String n, String o, double b) {
+	public Checkings(int n, String o, double b) {
 		super(n, o, b); 
 	}
 	
