@@ -15,6 +15,53 @@ public class Checkings extends Account{
 		maxChecksPerMonth = maxChecks; 
 	}
 	
+	//****************************
+	//Implement abstract method of chargeMaintFee
+	public void chargeMaintFee() {
+		System.out.println("Did not charge 25.00"); 
+	}
+	
+    //****************************
+	//Print Checkings Account
+	public String printAccount() {
+		return getNumber() + " " + "C " + getOwner() + " " + getBalance() + " " + this.lastCheckIssued + " " + this.lastCheckUsed + " " + maxChecksPerMonth; 
+	}
+	
+	//***********************************
+	//Withdraw method
+	public void withdraw(double amt) {
+		setBalance(getBalance() - amt); 
+		System.out.println("Checking Account " + number + " withdrew " + amt); 
+	}
+	
+	
+	//***********************************
+	//Deposit method
+	public void deposit(double amt) {
+		setBalance(getBalance() + amt); 
+		System.out.println("Checkings Account " + number + " deposited " + amt); 
+	}
+	
+	
+	
+	//***********************************
+	//Transfer method
+	public void transferTo(double amt) {  
+		balance = balance + amt; 
+		System.out.println(amt + " transferred to Checkings Account " + number); 
+	}
+	
+	public void transferFrom(double amt) {
+		balance = balance - amt; 
+	}
+
+	
+	//***********************************
+	//Close method
+	public void close() {
+		System.out.println("Closed checkings account " + getNumber()); 
+	}
+	
 	
 	
 	//****************************
