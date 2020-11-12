@@ -6,8 +6,11 @@
  * November 11, 2020
  */
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,96 +18,76 @@ import java.util.Scanner;
 public class BatchProcessor {
 	
 	//Stores all of the accounts in a single ArrayList
-	private static ArrayList<Account> accounts = new ArrayList<Account>(); 
+	private static ArrayList<Account> accounts = new ArrayList<Account>();
 
+	//**************************************
+	//Validate method: validate if the request is from a legitimate owner of the account
+	public static boolean validateOwner(Account a, String owner) {
+		for(int i = 0; i < accounts.size(); i++) {
+			if(a.getNumber() == accounts.get(i).getNumber()) {
+				if(a.getOwner().equals(owner)) {
+					return true; 
+				}
+			}
+		}
+		return false; 
+	}
 	
 	//**************************************
 	//Deposit method: amount to be deposited 
 	public static void processDeposit(Account a, double Amt) {
-		a.setBalance(a.getBalance() + Amt); 
+		a.deposit(Amt); 
 	}
-	
 	
 	//*************************************
 	//Withdrawal method: amount to be withdrawn
 	public static void processWithdrawal(Account a, double Amt, String owner) {
-		//validate if it's requested by a legitimate owner of the account
-		boolean foundOwner = false;
-		for (int i = 0; i < accounts.size(); i++) {
-			if (a.getNumber() == accounts.get(i).getNumber()) {
-				if (a.getOwner().equals(owner)) {   
-					foundOwner = true;
-				}	
-			}
-		}
-		
 		//if the owner is a legitimate owner 
-		if(foundOwner == true) {
-			a.setBalance(a.getBalance() - Amt);   //withdraw the amount from the balance 
+		if(validateOwner(a, owner)) {
+			a.withdraw(Amt); 
 		}
 		else { //error message
 			System.out.println("Account " + a.getNumber() + " could not process the withdrawal"); 
 		}
 	}
 	
-	
-	
 	//*************************************
 	//Transfer method: transfer from account to another account
 	public static void processTransfer(Account a, Account b, double Amt, String owner) {
-		//validate if it's requested by a legitimate owner of the account
-		boolean foundOwner = false;
-		for (int i = 0; i < accounts.size(); i++) {
-			if (a.getNumber() == accounts.get(i).getNumber()) {
-				if (a.getOwner().equals(owner)) {    
-					foundOwner = true;
-				}	
-			}
-		}
-		
 		//if it's a validated owner of the account 
-		if(foundOwner == true) { //transfer the amount from A to B
-			a.setBalance(a.getBalance() - Amt); 
-			b.setBalance(b.getBalance() + Amt); 
+		if(validateOwner(a, owner)) { //transfer the amount from A to B
+			a.transferFrom(Amt); 
+			b.transferTo(Amt); 
 		}
 		else { //error message 
-			System.out.println("Account " + a.getNumber() + " could not transfer to account " + b.getNumber()); 
+			System.out.println(Amt + " from " + owner + " could not transfer"); 
 		}
-		
 	}
-	
-	
 	
 	//***************************************
 	//Close method: close account
 	public static void processClose(Account a, String owner) {
 		boolean foundOwner = false;
-		int accountFoundNumber = -1;
+		int accountFoundNumber = 0; 
 		for (int i = 0; i < accounts.size(); i++) {
 			if (a.getNumber() == accounts.get(i).getNumber()) {
-				if (a.getOwner().equals(owner)) {    //make sure both of 'em have spaces???
+				if (a.getOwner().equals(owner)) {   
 					foundOwner = true;
-					accountFoundNumber = i;
+					accountFoundNumber = i;  //account to be closed 
 				}	
 			}
 		}
-		
 		//if balance is positive and the owner is legitimate owner: close the account
 		if (foundOwner == true && a.getBalance() > 0.0 ) {
-			//remove the account from the accounts ArrayList 
-			accounts.remove(accountFoundNumber);
-			//delete account from record of text file!!!! 
-			//!!!!!!!!!!!!!!!!!!!
+			accounts.get(accountFoundNumber).close(); 
+			accounts.remove(accountFoundNumber);   	//remove the account from the accounts ArrayList 
 		} 
 		else { //error message
 			System.out.println("Account " + a.getNumber() + " could not be closed");
 		}
-		
 	}
 		
 
-	
-	
 	//****************************************
 	//Main method
 	public static void main(String[] args) {
@@ -137,12 +120,13 @@ public class BatchProcessor {
 					int lastCheckIssued = Integer.parseInt(a[5]); 
 					int lastCheckUsed = Integer.parseInt(a[6]); 
 					int maxChecksMonth = Integer.parseInt(a[7]); 
-					accounts.add(i, new Checkings(accountNum, ownerName, acctBalance, lastCheckIssued, lastCheckUsed, maxChecksMonth)); 
+					Checkings c = new Checkings(accountNum, ownerName, acctBalance, lastCheckIssued, lastCheckUsed, maxChecksMonth); 
+					accounts.add(i, c); 
 				}
 				else if(accountType == 'S'){   //make a new savings account objects
-					accounts.add(i, new Savings(accountNum, ownerName, acctBalance)); 
-				    //If the balance in savings accounts goes below minimum, maintenance fee is charged once per month
-					((Savings) accounts.get(i)).chargeMaintFee(); 
+					Savings s = new Savings(accountNum, ownerName, acctBalance); 
+					//if the balance in the savings account goes below the min, charge the maint. fee once per month
+					accounts.add(i, s); 
 				}
 			}
 			
@@ -167,8 +151,8 @@ public class BatchProcessor {
 			while(s.hasNextLine()) {
 				numRequests++;
 				s.nextLine(); 
-				System.out.println(numRequests); 
 			}
+			
 			
 			Scanner x = new Scanner(batch); 
 			for(int i = 0; i < numRequests; i++) {
@@ -184,13 +168,19 @@ public class BatchProcessor {
 					String ownerFirst = x.next(); 
 					String ownerLast = x.next();
 					String combinedOwnerName = ownerFirst + " " + ownerLast; 
-					Account accountItself2 = null;
+					
+					boolean found = false; 
 					for(int k = 0; k < accounts.size(); k++) {
 						if(accounts.get(k).getNumber() == accountNumber) {
-							accountItself2 = accounts.get(k); 
+							Account accountItself = accounts.get(k); 
+							processWithdrawal(accountItself, amount, combinedOwnerName); 
+							found = true; 
 						}
 					}
-					processWithdrawal(accountItself2, amount, combinedOwnerName); 
+					
+					if(found == false) {
+						System.out.println("Account " + accountNumber + " could not process withdrawal"); 
+					}
 				}
 				
 				
@@ -201,13 +191,20 @@ public class BatchProcessor {
 					int accountNumber = Integer.parseInt(a); 
 					String amt = x.next(); 
 					double amount = Double.parseDouble(amt); 
-					Account accountItself = null;
+					
+					boolean found = false; 
 					for(int k = 0; k < accounts.size(); k++) {
-						if(accounts.get(k).getNumber() == accountNumber) {
-							accountItself = accounts.get(k); 
+						if (accounts.get(k).getNumber() == accountNumber) {
+							Account accountItself = accounts.get(k);
+							processDeposit(accountItself, amount);
+							found = true; 
 						}
 					}
-					processDeposit(accountItself, amount); 
+					
+					//if the account number does not exist within our accounts arraylist
+					if(found == false) {
+						System.out.println("Account " + accountNumber + " could not process deposit"); 
+					}
 				}
 				
 				
@@ -220,7 +217,9 @@ public class BatchProcessor {
 					int accountNumberDestination = Integer.parseInt(b); 
 					String amt = x.next(); 
 					double amount = Double.parseDouble(amt); 
-					String owner = x.next(); 
+					String firstName = x.next(); 
+					String lastName = x.next();
+					String combinedOwnerName = firstName + " " + lastName; 
 					
 					Account accountSource = null;
 					for(int k = 0; k < accounts.size(); k++) {
@@ -236,7 +235,7 @@ public class BatchProcessor {
 						}
 					}
 					
-					processTransfer(accountSource, accountDestination, amount, owner);
+					processTransfer(accountSource, accountDestination, amount, combinedOwnerName);
 				}
 				
 				
@@ -248,28 +247,52 @@ public class BatchProcessor {
 					String ownerFirst = x.next();
 					String ownerLast = x.next();
 					String combinedOwnerName = ownerFirst + " " + ownerLast;
-					Account accountItself = null; 
 					
-					for (int j = 0; j < accounts.size(); j++) {
-						if (accounts.get(i).getNumber() == accountNumber) {
-							accountItself = accounts.get(i);
+					boolean found = false; 
+					for(int w = 0; w < accounts.size(); w++) {
+						if (accounts.get(w).getNumber() == accountNumber) {
+							Account accountItself = accounts.get(w);
+							processClose(accountItself, combinedOwnerName);
+							found = true; 
 						}
 					}
-					System.out.println(accountItself.getOwner()); 
-					//processClose(accountItself, combinedOwnerName);
+					
+					//if the account number does not exist within our accounts arraylist
+					if(found == false) {
+						System.out.println("Account " + accountNumber + " could not be closed"); 
+					}
 				}
-
+				
 			}
 		    s.close(); //close the scanner
 			x.close(); 
-			
 		} //if it fails, then the catch block will handle errors
 		catch(FileNotFoundException error) {
 			System.out.println("Error"); 
 			error.printStackTrace(); //will tell you what went wrong
 		}
 		
-   
+
+		//Overwrite the accounts.txt file with the updated account status data 
+		try {
+			String source = accounts.get(0).printAccount() + "\n"; 
+			for(int t = 0; t < accounts.size(); t++) {
+				accounts.get(t).chargeMaintFee(); 
+			}
+			for(int i = 1; i < accounts.size(); i++) {
+				source = source + accounts.get(i).printAccount() + "\n"; 
+			}
+			File file = new File("accounts.txt"); 
+			FileWriter fw = new FileWriter(file.getAbsoluteFile()); 
+			BufferedWriter bw = new BufferedWriter(fw); 
+			bw.write(source); 
+			bw.close(); 
+		} 
+		catch (IOException e) {
+		    e.printStackTrace();
+		}   
+		
+		
 
 	}
 }
