@@ -6,7 +6,7 @@ public class Savings extends Account {
 	
 	//********************************
 	//Constructor
-	public Savings(String n, String o, double b) {
+	public Savings(int n, String o, double b) {
 		super(n, o, b); 
 	}
 	
