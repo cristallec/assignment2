@@ -1,31 +1,34 @@
 //Checkings accounts (sub-class of Accounts class)
 public class Checkings extends Account{
 	//private data members 
-	String lastCheckIssued; 
-	String lastCheckUsed; 
+	int lastCheckIssued; 
+	int lastCheckUsed; 
 	int maxChecksPerMonth;
 	
 	
 	//****************************
 	//Constructor
-	public Checkings(int n, String o, double b) {
+	public Checkings(int n, String o, double b, int lastCheckIssued, int lastCheckUsed, int maxChecks) {
 		super(n, o, b); 
+		this.lastCheckIssued = lastCheckIssued; 
+		this.lastCheckUsed = lastCheckUsed;
+		maxChecksPerMonth = maxChecks; 
 	}
 	
 	
 	
 	//****************************
 	//Getters and Setters
-	public String getLastCheckIssued() {
+	public int getLastCheckIssued() {
 		return lastCheckIssued;
 	}
-	public void setLastCheckIssued(String lastCheckIssued) {
+	public void setLastCheckIssued(int lastCheckIssued) {
 		this.lastCheckIssued = lastCheckIssued;
 	}
-	public String getLastCheckUsed() {
+	public int getLastCheckUsed() {
 		return lastCheckUsed;
 	}
-	public void setLastCheckUsed(String lastCheckUsed) {
+	public void setLastCheckUsed(int lastCheckUsed) {
 		this.lastCheckUsed = lastCheckUsed;
 	}
 	public int getMaxChecksPerMonth() {
