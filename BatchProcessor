@@ -9,7 +9,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner; 
+import java.util.Scanner;
+import java.util.zip.InflaterInputStream; 
 
 //Driver class
 public class BatchProcessor {
@@ -40,7 +41,52 @@ public class BatchProcessor {
 	//Close method: close account
 	public static void processClose(Account a, String owner) {
 		
+		boolean foundOwner = false;
+		int accountFoundNumber = -1;
+		
+		for (int i = 0; i < accounts.size(); i++) {
+			
+			if (a.getNumber() == accounts.get(i).getNumber()) {
+				
+				if (a.getOwner().equals(owner)) { //make sure both of 'em have spaces???
+					
+					foundOwner = true;
+					accountFoundNumber = i;
+					
+					
+				}
+				
+			}
+			
+		}
+		//loop through accounts arraylist
+		//if a.getAccountNumber() == account.getAccountNumber() {
+		// 		check if a.getOwner() == String owner that we passed in
+		//then we chiillinnnn
+		
+		
+		//if balance = positive && owner is legitimate owner
+		
+		if (foundOwner == true && a.getBalance() > 0.0 ) {
+			
+			//close the account
+			accounts.remove(accountFoundNumber);
+			//delete account from record of text file
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			
+			
+		} else {
+			System.out.println("Account " + a.getNumber() + " could not be closed");
+		}
+		
+			
+			
+			//close account
+		//else
+			//say no thanks and do something (error message)
+		
 	}
+		
 	
 	//****************************************
 	//Main method
@@ -80,7 +126,7 @@ public class BatchProcessor {
 			for(int i = 0; i < numAccounts; i++) {
 				String line = scan.nextLine(); 
 				String[] a = line.split(" ");   //splits on the blank space 
-				String accountNum = a[0];  //account number
+				int accountNum = Integer.parseInt(a[0]);  //account number
 				char accountType = a[1].charAt(0);   //account type: C for checking, S for savings
 				String ownerName = a[2] + " " + a[3];       //owner name given as first name and last name
 				double acctBalance = Double.parseDouble(a[4]);   //account balance
@@ -138,6 +184,23 @@ public class BatchProcessor {
 				
 				//C to close account 
 				if(request.equals("C")) {
+					String a = s.next(); 
+					int accountNumber = Integer.parseInt(a);
+					String ownerFirst = s.next();
+					String ownerLast = s.next();
+					String combinedOwnerName = ownerFirst + " " + ownerLast;
+					Account accountItself = null;
+					
+					for (int j = 0; j < accounts.size(); j++) {
+						
+						if (accounts.get(i).getNumber() == accountNumber) {
+							accountItself = accounts.get(i);
+					}
+					
+					processClose(accountItself, combinedOwnerName);
+					
+					
+				
 					
 				}
 				
@@ -147,6 +210,7 @@ public class BatchProcessor {
 			
 			s.close(); //close the scanner
 			x.close(); 
+			}
 			
 		} //if it fails, then the catch block will handle errors
 		catch(FileNotFoundException error) {
@@ -158,3 +222,5 @@ public class BatchProcessor {
 
 	}
 }
+	
+	
