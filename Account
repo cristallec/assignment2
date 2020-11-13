@@ -1,9 +1,9 @@
 //Accounts super class- abstract 
 public abstract class Account {
 	//private data members
-	int number; 
-	String owner; 
-	double balance;
+	private int number; 
+	private String owner; 
+	private double balance;
 	
 	//**********************
 	//Constructor 
