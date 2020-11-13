@@ -1,8 +1,8 @@
 //Savings accounts (sub-class of Account class)
 public class Savings extends Account {
 	//private data members 
-	double minBalance = 100.00; 
-	double maintFee = 25.00; 
+	private double minBalance = 100.00; 
+	private double maintFee = 25.00; 
 	
 	//********************************
 	//Constructor
@@ -19,26 +19,26 @@ public class Savings extends Account {
 	//***********************************
 	//Withdraw method
 	public void withdraw(double amt) {
-		balance = balance - amt; 
-		System.out.println("Savings Account " + number + " withdrew " + amt); 
+		setBalance(getBalance() - amt); 
+		System.out.println("Savings Account " + getNumber() + " withdrew " + amt); 
 	}
 	
 	//***********************************
 	//Deposit method
 	public void deposit(double amt) {
 		setBalance(getBalance() + amt); 
-		System.out.println("Savings Account " + number + " deposited " + amt); 
+		System.out.println("Savings Account " + getNumber() + " deposited " + amt); 
 	}
 	
 	//***********************************
 	//Transfer method
 	public void transferTo(double amt) {  
-		balance = balance + amt; 
-		System.out.println(amt + " transferred to Savings Account " + number); 
+		setBalance(getBalance() + amt);
+		System.out.println(amt + " transferred to Savings Account " + getNumber()); 
 	}
 	
 	public void transferFrom(double amt) {
-		balance = balance - amt; 
+		setBalance(getBalance() - amt); 
 	}
 
 	
