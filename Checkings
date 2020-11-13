@@ -1,9 +1,9 @@
 //Checkings accounts (sub-class of Accounts class)
 public class Checkings extends Account{
 	//private data members 
-	int lastCheckIssued; 
-	int lastCheckUsed; 
-	int maxChecksPerMonth;
+	private int lastCheckIssued; 
+	private int lastCheckUsed; 
+	private int maxChecksPerMonth;
 	
 	
 	//****************************
@@ -31,7 +31,7 @@ public class Checkings extends Account{
 	//Withdraw method
 	public void withdraw(double amt) {
 		setBalance(getBalance() - amt); 
-		System.out.println("Checking Account " + number + " withdrew " + amt); 
+		System.out.println("Checking Account " + getNumber() + " withdrew " + amt); 
 	}
 	
 	
@@ -39,7 +39,7 @@ public class Checkings extends Account{
 	//Deposit method
 	public void deposit(double amt) {
 		setBalance(getBalance() + amt); 
-		System.out.println("Checkings Account " + number + " deposited " + amt); 
+		System.out.println("Checkings Account " + getNumber() + " deposited " + amt); 
 	}
 	
 	
@@ -47,12 +47,12 @@ public class Checkings extends Account{
 	//***********************************
 	//Transfer method
 	public void transferTo(double amt) {  
-		balance = balance + amt; 
-		System.out.println(amt + " transferred to Checkings Account " + number); 
+		setBalance(getBalance() + amt); 
+		System.out.println(amt + " transferred to Checkings Account " + getNumber()); 
 	}
 	
 	public void transferFrom(double amt) {
-		balance = balance - amt; 
+		setBalance(getBalance() - amt); 
 	}
 
 	
