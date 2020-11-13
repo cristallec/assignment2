@@ -125,7 +125,7 @@ public class BatchProcessor {
 				}
 				else if(accountType == 'S'){   //make a new savings account objects
 					Savings s = new Savings(accountNum, ownerName, acctBalance); 
-					//if the balance in the savings account goes below the min, charge the maint. fee once per month
+					//if the balance in the savings account goes below the min, charge the maint. fee once per month	
 					accounts.add(i, s); 
 				}
 			}
@@ -275,10 +275,12 @@ public class BatchProcessor {
 
 		//Overwrite the accounts.txt file with the updated account status data 
 		try {
-			String source = accounts.get(0).printAccount() + "\n"; 
+			//charge maint fee for savings accounts 
 			for(int t = 0; t < accounts.size(); t++) {
 				accounts.get(t).chargeMaintFee(); 
 			}
+			
+			String source = accounts.get(0).printAccount() + "\n"; 
 			for(int i = 1; i < accounts.size(); i++) {
 				source = source + accounts.get(i).printAccount() + "\n"; 
 			}
@@ -297,5 +299,4 @@ public class BatchProcessor {
 	}
 }
 
-	
 	
