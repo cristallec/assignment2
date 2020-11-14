@@ -15,12 +15,6 @@ public class Checkings extends Account{
 		maxChecksPerMonth = maxChecks; 
 	}
 	
-	//****************************
-	//Implement abstract method of chargeMaintFee
-	public void chargeMaintFee() {
-		System.out.println("Did not charge 25.00"); 
-	}
-	
     //****************************
 	//Print Checkings Account
 	public String printAccount() {
