@@ -13,10 +13,6 @@ public abstract class Account {
 		balance = b; 
 	}
 	
-	//*************************
-	//abstract method 
-	public abstract void chargeMaintFee();
-	
 	//***********************************
 	//printAccounts: print out the number, owner, balance
 	public String printAccount() {
