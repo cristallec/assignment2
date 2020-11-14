@@ -56,8 +56,8 @@ public class BatchProcessor {
 	public static void processTransfer(Account a, Account b, double Amt, String owner) {
 		//if it's a validated owner of the account 
 		if(validateOwner(a, owner)) { //transfer the amount from A to B
-			a.transferFrom(Amt); 
-			b.transferTo(Amt); 
+			a.withdraw(Amt);
+			b.deposit(Amt); 
 		}
 		else { //error message 
 			System.out.println(Amt + " from " + owner + " could not transfer"); 
@@ -300,4 +300,3 @@ public class BatchProcessor {
 
 	}
 }
-	
