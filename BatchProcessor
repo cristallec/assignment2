@@ -277,7 +277,10 @@ public class BatchProcessor {
 		try {
 			//charge maint fee for savings accounts 
 			for(int t = 0; t < accounts.size(); t++) {
-				accounts.get(t).chargeMaintFee(); 
+				if(accounts.get(t) instanceof Savings) {  //cast the account to savings - downcasting 
+					Savings s = (Savings) accounts.get(t);  
+					s.chargeMaintFee(); 
+				}
 			}
 			
 			String source = accounts.get(0).printAccount() + "\n"; 
@@ -294,9 +297,7 @@ public class BatchProcessor {
 		    e.printStackTrace();
 		}   
 		
-		
 
 	}
 }
-
 	
