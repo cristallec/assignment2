@@ -23,33 +23,31 @@ public abstract class Account {
 	//Withdraw method
 	public void withdraw(double amt) {
 		balance = balance - amt; 
-		System.out.println("Account " + number + " withdrew " + amt); 
 	}
 	
 	//***********************************
 	//Deposit method
 	public void deposit(double amt) {
 		balance = balance + amt; 
-		System.out.println("Account " + number + " deposited " + amt); 
 	}
 	
 	
 	//***********************************
 	//Transfer method 
-	public void transferTo(double amt) {  
-		balance = balance + amt; 
-		System.out.println(amt + " transferred to Account " + number); 
-	}
-	
-	public void transferFrom(double amt) {
-		balance = balance - amt; 
-	}
-
-	
+//	public void transferTo(double amt) {  
+//		balance = balance + amt; 
+//		System.out.println(amt + " transferred to Account " + number); 
+//	}
+//	
+//	public void transferFrom(double amt) {
+//		balance = balance - amt; 
+//	}
+//	
+//	
 	//***********************************
 	//Close method
 	public void close() {
-		System.out.println("Closed account " + number); 
+
 	}
 
 	//************************************
