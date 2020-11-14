@@ -25,7 +25,6 @@ public class Checkings extends Account{
 	//Withdraw method
 	public void withdraw(double amt) {
 		setBalance(getBalance() - amt); 
-		System.out.println("Checking Account " + getNumber() + " withdrew " + amt); 
 	}
 	
 	
@@ -33,27 +32,22 @@ public class Checkings extends Account{
 	//Deposit method
 	public void deposit(double amt) {
 		setBalance(getBalance() + amt); 
-		System.out.println("Checkings Account " + getNumber() + " deposited " + amt); 
 	}
 	
 	
 	
 	//***********************************
-	//Transfer method
-	public void transferTo(double amt) {  
-		setBalance(getBalance() + amt); 
-		System.out.println(amt + " transferred to Checkings Account " + getNumber()); 
-	}
-	
-	public void transferFrom(double amt) {
-		setBalance(getBalance() - amt); 
-	}
-
+	/*
+	 * //Transfer method public void transferTo(double amt) {
+	 * setBalance(getBalance() + amt); System.out.println(amt +
+	 * " transferred to Checkings Account " + getNumber()); }
+	 * 
+	 * public void transferFrom(double amt) { setBalance(getBalance() - amt); }
+	 */
 	
 	//***********************************
 	//Close method
 	public void close() {
-		System.out.println("Closed checkings account " + getNumber()); 
 	}
 	
 	
