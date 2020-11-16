@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 //Accounts super class- abstract 
 public abstract class Account {
 	//private data members
@@ -13,43 +15,42 @@ public abstract class Account {
 		balance = b; 
 	}
 	
+	//******************************
+	//Validate method: validate if the request is from a legitimate owner of the account
+    public boolean validateOwner(ArrayList<Account> accounts, int acctNumber, String realOwner, String owner) {
+		for(int i = 0; i < accounts.size(); i++) {
+			if(acctNumber == accounts.get(i).getNumber()) {
+				if(realOwner.equals(owner)) {
+					return true; 
+				}
+			}
+		}
+		return false; 
+	}
+	
+    
 	//***********************************
 	//printAccounts: print out the number, owner, balance
-	public String printAccount() {
-		return "Number: " + this.number + " Owner: " + this.owner + " Balance: " + this.balance; 
-	}
+	public abstract String printAccount(); 
 	
 	//***********************************
 	//Withdraw method
-	public void withdraw(double amt) {
-		balance = balance - amt; 
-	}
+	public abstract void withdraw(ArrayList<Account> accounts, String owner, double amt); 
 	
 	//***********************************
 	//Deposit method
-	public void deposit(double amt) {
-		balance = balance + amt; 
-	}
-	
+	public abstract void deposit(ArrayList<Account> accounts, double amt); 
 	
 	//***********************************
-	//Transfer method 
-//	public void transferTo(double amt) {  
-//		balance = balance + amt; 
-//		System.out.println(amt + " transferred to Account " + number); 
-//	}
-//	
-//	public void transferFrom(double amt) {
-//		balance = balance - amt; 
-//	}
-//	
-//	
+	//Transfer methods
+	public abstract void transferFrom(ArrayList<Account> accounts, String owner, double amt);
+	public abstract void transferTo(ArrayList<Account> accounts, String owner, Account a, double amt); 
+	
 	//***********************************
 	//Close method
-	public void close() {
+	public abstract void close(ArrayList<Account> accounts, String owner);
 
-	}
-
+	
 	//************************************
 	//Getters and Setters
 	public int getNumber() {
