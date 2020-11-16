@@ -1,13 +1,30 @@
+import java.util.ArrayList;
+
 //Savings accounts (sub-class of Account class)
 public class Savings extends Account {
 	//private data members 
 	private double minBalance = 100.00; 
 	private double maintFee = 25.00; 
+	private boolean belowMinBal = false;   //if the balance goes below the min balance this month, set it to be true. 
+	//At the end of the month, set belowMinBal to be true for all of them 
 	
 	//********************************
 	//Constructor
 	public Savings(int n, String o, double b) {
 		super(n, o, b); 
+		chargeMaintFee(); 
+	}
+	
+	//********************************
+	//If the balance in the savings account goes below the min., 
+	//the maint. fee is charged once per month until the situation is corrected 
+	public void chargeMaintFee() {
+		if(belowMinBal == false) {
+			if(this.getBalance() < minBalance) {
+				setBalance(getBalance() - maintFee); 
+				System.out.println(this.getNumber() + " was charged 25.00"); 
+			}
+		}
 	}
 	
 	//**********************************
@@ -18,39 +35,71 @@ public class Savings extends Account {
 	
 	//***********************************
 	//Withdraw method
-	public void withdraw(double amt) {
-		setBalance(getBalance() - amt); 
+	public void withdraw(ArrayList<Account> accounts, String owner, double amt) {
+		if(validateOwner(accounts, getNumber(), getOwner(), owner)) {
+			setBalance(getBalance() - amt); 
+			System.out.println("Savings Account " + getNumber() + " withdrew " + amt); 
+			chargeMaintFee(); 
+		}
+		else { //error message
+			System.out.println("Account " + getNumber() + " could not process the withdrawal"); 
+		}
 	}
 	
 	//***********************************
 	//Deposit method
-	public void deposit(double amt) {
+	public void deposit(ArrayList<Account> accounts, double amt) {
 		setBalance(getBalance() + amt); 
+	    System.out.println("Checking Account " + getNumber() + " deposited " + amt); 
+		chargeMaintFee(); 
 	}
 	
 	//***********************************
-	//Transfer method
-	/*
-	 * public void transferTo(double amt) { setBalance(getBalance() + amt);
-	 * System.out.println(amt + " transferred to Savings Account " + getNumber()); }
-	 * 
-	 * public void transferFrom(double amt) { setBalance(getBalance() - amt); }
-	 */
-	
-	//***********************************
-	//Close method
-	public void close() {
-	}
-	
-	
-	//********************************
-	//If the balance in the savings account goes below the min., 
-	//the maint. fee is charged once per month until the situation is corrected 
-	public void chargeMaintFee() {
-		if(this.getBalance() < minBalance) {
-			setBalance(getBalance() - maintFee); 
+	//Transfer methods
+	public void transferFrom(ArrayList<Account> accounts, String owner, double amt) {
+		if(validateOwner(accounts, getNumber(), getOwner(), owner)) { //transfer the amount from A to B
+			setBalance(getBalance() - amt); 
+			System.out.println("Account" + getNumber() + " transferred " + amt + " to another account"); 
+			chargeMaintFee(); 
+		}
+		else { //error message 
+			System.out.println("Account " + getNumber() + " could not transfer " + amt); 
 		}
 	}
+	
+	public void transferTo(ArrayList<Account> accounts, String owner, Account a, double amt) {
+		if(validateOwner(accounts, a.getNumber(), a.getOwner(), owner)) {    //transfer the amount from A to B
+			setBalance(getBalance() + amt); 
+			chargeMaintFee(); 
+		}
+	}
+
+	
+	//***********************************
+	//Close Method
+	public void close(ArrayList<Account> accounts, String owner) {
+		boolean foundOwner = false;
+		int accountFoundNumber = 0; 
+		for (int i = 0; i < accounts.size(); i++) {
+			if (getNumber() == accounts.get(i).getNumber()) {
+				if (getOwner().equals(owner)) {   
+					foundOwner = true;
+					accountFoundNumber = i;  //account to be closed 
+				}	
+			}
+		}
+		
+		//if balance is positive and the owner is legitimate owner: close the account
+		if (foundOwner == true && getBalance() > 0.0 ) {
+			accounts.remove(accountFoundNumber);   	//remove the account from the accounts ArrayList 
+			System.out.println("Closed savings account " + getNumber()); 
+		} 
+		else { //error message
+			System.out.println("Account " + getNumber() + " could not be closed");
+		}
+	}
+	
+	
 	
 	//*********************************
 	//Getters and Setters
