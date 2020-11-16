@@ -22,7 +22,6 @@ public class Savings extends Account {
 		if(belowMinBal == false) {
 			if(this.getBalance() < minBalance) {
 				setBalance(getBalance() - maintFee); 
-				System.out.println(this.getNumber() + " was charged 25.00"); 
 				belowMinBal = true;
 			}
 		}
@@ -39,7 +38,6 @@ public class Savings extends Account {
 	public void withdraw(ArrayList<Account> accounts, String owner, double amt) {
 		if(validateOwner(accounts, getNumber(), getOwner(), owner)) {
 			setBalance(getBalance() - amt); 
-			System.out.println("Savings Account " + getNumber() + " withdrew " + amt); 
 			chargeMaintFee(); 
 		}
 		else { //error message
@@ -51,7 +49,6 @@ public class Savings extends Account {
 	//Deposit method
 	public void deposit(ArrayList<Account> accounts, double amt) {
 		setBalance(getBalance() + amt); 
-	    System.out.println("Checking Account " + getNumber() + " deposited " + amt); 
 		chargeMaintFee(); 
 	}
 	
@@ -59,8 +56,7 @@ public class Savings extends Account {
 	//Transfer methods
 	public void transferFrom(ArrayList<Account> accounts, String owner, double amt) {
 		if(validateOwner(accounts, getNumber(), getOwner(), owner)) { //transfer the amount from A to B
-			setBalance(getBalance() - amt); 
-			System.out.println("Account" + getNumber() + " transferred " + amt + " to another account"); 
+			setBalance(getBalance() - amt);
 			chargeMaintFee(); 
 		}
 		else { //error message 
@@ -93,7 +89,6 @@ public class Savings extends Account {
 		//if balance is positive and the owner is legitimate owner: close the account
 		if (foundOwner == true && getBalance() > 0.0 ) {
 			accounts.remove(accountFoundNumber);   	//remove the account from the accounts ArrayList 
-			System.out.println("Closed savings account " + getNumber()); 
 		} 
 		else { //error message
 			System.out.println("Account " + getNumber() + " could not be closed");
