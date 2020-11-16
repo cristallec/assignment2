@@ -23,6 +23,7 @@ public class Savings extends Account {
 			if(this.getBalance() < minBalance) {
 				setBalance(getBalance() - maintFee); 
 				System.out.println(this.getNumber() + " was charged 25.00"); 
+				belowMinBal = true;
 			}
 		}
 	}
