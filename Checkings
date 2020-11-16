@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 //Checkings accounts (sub-class of Accounts class)
 public class Checkings extends Account{
 	//private data members 
@@ -17,37 +19,70 @@ public class Checkings extends Account{
 	
     //****************************
 	//Print Checkings Account
-	public String printAccount() {
+	public String printAccount(){
 		return getNumber() + " " + "C " + getOwner() + " " + getBalance() + " " + this.lastCheckIssued + " " + this.lastCheckUsed + " " + maxChecksPerMonth; 
 	}
 	
 	//***********************************
 	//Withdraw method
-	public void withdraw(double amt) {
-		setBalance(getBalance() - amt); 
+	public void withdraw(ArrayList<Account> accounts, String owner, double amt) {
+		if(validateOwner(accounts, getNumber(), getOwner(), owner)) {
+			setBalance(getBalance() - amt); 
+			System.out.println("Checking Account " + getNumber() + " withdrew " + amt); 
+		}
+		else { //error message
+			System.out.println("Account " + getNumber() + " could not process the withdrawal"); 
+		}
 	}
-	
 	
 	//***********************************
 	//Deposit method
-	public void deposit(double amt) {
+	public void deposit(ArrayList<Account> accounts, double amt) {
 		setBalance(getBalance() + amt); 
+		System.out.println("Checking Account " + getNumber() + " deposited " + amt); 
 	}
 	
+	//***********************************
+	//Transfer methods
+	public void transferFrom(ArrayList<Account> accounts, String owner, double amt) {
+		if(validateOwner(accounts, getNumber(), getOwner(), owner)) { //transfer the amount from A to B
+			setBalance(getBalance() - amt); 
+			System.out.println("Account" + getNumber() + " transferred " + amt + " to another account"); 
+		}
+		else { //error message 
+			System.out.println("Account " + getNumber() + " could not transfer " + amt); 
+		}
+	}
 	
+	public void transferTo(ArrayList<Account> accounts, String owner, Account a, double amt) {
+		if(validateOwner(accounts, a.getNumber(), a.getOwner(), owner)) {    //transfer the amount from A to B
+			setBalance(getBalance() + amt); 
+		}
+	}
+
 	
 	//***********************************
-	/*
-	 * //Transfer method public void transferTo(double amt) {
-	 * setBalance(getBalance() + amt); System.out.println(amt +
-	 * " transferred to Checkings Account " + getNumber()); }
-	 * 
-	 * public void transferFrom(double amt) { setBalance(getBalance() - amt); }
-	 */
-	
-	//***********************************
-	//Close method
-	public void close() {
+	//Close method 
+	public void close(ArrayList<Account> accounts, String owner) {
+		boolean foundOwner = false;
+		int accountFoundNumber = 0; 
+		for (int i = 0; i < accounts.size(); i++) {
+			if (getNumber() == accounts.get(i).getNumber()) {
+				if (getOwner().equals(owner)) {   
+					foundOwner = true;
+					accountFoundNumber = i;  //account to be closed 
+				}	
+			}
+		}
+		
+		//if balance is positive and the owner is legitimate owner: close the account
+		if (foundOwner == true && getBalance() > 0.0 ) {
+			accounts.remove(accountFoundNumber);   	//remove the account from the accounts ArrayList 
+			System.out.println("Closed checkings account" + accountFoundNumber); 
+		} 
+		else { //error message
+			System.out.println("Account " + getNumber() + " could not be closed");
+		}
 	}
 	
 	
